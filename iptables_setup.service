@@ -1,0 +1,9 @@
+[Unit]
+Description=Iptables rules setup service for OpenVPN cloud.
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /usr/bin/iptables_setup.sh
+
+[Install]
+WantedBy=multi-user.target
