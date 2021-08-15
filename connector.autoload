@@ -1,0 +1,7 @@
+{
+    "name": "OpenVPN Cloud",
+    "autostart": true,
+    "tunnel": {
+        "persist": true
+    }
+}
