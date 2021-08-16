@@ -40,7 +40,7 @@ docker image rm ovpn_connector.docker
 ```
 
 
-# Don't want to / Can't build the container
+# Don't want to / Can't build the Docker image
 
 Use the Docker image on my Docker hub instead:
 
