@@ -1,5 +1,5 @@
 # Containerized OpenVPN Cloud Connector
-This container encapsulates the OpenVPN Cloud Connector, along with SystemD and Dbus for easy deployment and encapsulation from the host environment.
+This container encapsulates the OpenVPN Cloud Connector, along with SystemD and Dbus for easy deployment.
 
 
 ## To build 
@@ -16,10 +16,10 @@ docker build --tag ovpn-connector .
 
 To run:
 
+To run:
 - Download the OpenVPN cloud connector file for a network (`connectorXX_region.opvn`) 
 - Optionally, save the connector file to the `ovpn-connector` directory, for easy identification
-- Mount the connector file to  `/etc/openvpn3/autoload/connector.conf` volume in the container, using the command below:
-- Finally, run the docker command below (make sure to replace path to connector file):
+- Mount the connector file to  `/etc/openvpn3/autoload/connector.conf` volume in the container, using the command below and run:
 
 ```bash
 docker run -d --restart always --name ovpn_connector.docker -p 1194:1194/udp -p 443:443/tcp --privileged -v /<YOUR>/<PATH>/<TO>/connectorXX_region.opvn:/etc/openvpn3/autoload/connector.conf -v /sys/fs/cgroup:/sys/fs/cgroup:ro ovpn-connector
@@ -40,6 +40,32 @@ docker image rm ovpn_connector.docker
 
 ```
 
+
+# Don't want to / Can't build the container
+
+Use the Docker image on my Docker hub instead:
+
+https://hub.docker.com/r/rafayak/ovpn-connector
+
+```bash
+# Pull the image
+docker pull rafayak/ovpn-connector
+
+# Run the container. Make sure to replace the path to your connector file
+docker run -d --restart always --name ovpn_connector.docker -p 1194:1194/udp -p 443:443/tcp --privileged -v /<YOUR>/<PATH>/<TO>/connectorXX_region.opvn:/etc/openvpn3/autoload/connector.conf -v /sys/fs/cgroup:/sys/fs/cgroup:ro rafayak/ovpn-connector
+
+# To stop and remove the container
+docker container rm -f ovpn_connector.docker
+
+# Additionally to remove the image
+docker image rm rafayak/ovpn-connector
+```
+
+# Why use containerized OpenVPN Cloud connector?
+
+The main reason for using a containerized connector is that it encapsulates the changes OpenVPN3 (the new OpenVPN framework) makes from the host machine.
+
+The OpenVPN3 linux client makes chnages to the DNS configurations and IPtables to function correctly. If you run many applications/services on the host machine that rely on bespoke DNS and IPtable rules then OpenVPN3 can bring all or some of your serivices to a halt. Degugging the DNS and IPtables route issues can also be a massive time sink. Furthermore, the setup of a OpenVPN Cloud connector requires enabling IP-forwarding on the host which may not be desireable in some circumstances. Therefore, a containerized OpenVPN Cloud connector saves the host machine from changes that may affect your services.
 
 
 ---
