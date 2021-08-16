@@ -14,7 +14,6 @@ docker build --tag ovpn-connector .
 
 ## How to run
 
-To run:
 
 To run:
 - Download the OpenVPN cloud connector file for a network (`connectorXX_region.opvn`) 
