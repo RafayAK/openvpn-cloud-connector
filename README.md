@@ -64,7 +64,7 @@ docker image rm rafayak/ovpn-connector
 
 The main reason for using a containerized connector is to encapsulate the changes by OpenVPN3 (the new OpenVPN framework) from the host machine.
 
-The OpenVPN3 linux client makes chnages to the DNS configurations and IPtables to function correctly. If you run many applications/services on the host machine that rely on bespoke DNS and IPtable rules then OpenVPN3 can bring all or some of your serivices to a halt. Degugging the DNS and IPtables route issues can also be a massive time sink. Furthermore, the setup of a OpenVPN Cloud connector requires enabling IP-forwarding on the host which may not be desireable in some circumstances. Therefore, a containerized OpenVPN Cloud connector saves the host machine from changes that may affect your services.
+The OpenVPN3 linux client makes chnages to the DNS configurations and IPtables; it also uses the host machines port `1194` and `443` to function correctly. If you run many applications/services on the host machine that rely on bespoke DNS and IPtable rules or run on specific ports that OpenVPN3 requires then OpenVPN3 can bring all or some of your serivices to a halt. Degugging the DNS and IPtables route issues can also be a massive time sink. Furthermore, the setup of a OpenVPN Cloud connector requires enabling IP-forwarding on the host which may not be desireable in some circumstances. Therefore, a containerized OpenVPN Cloud connector saves the host machine from changes that may affect your services.
 
 
 ---
