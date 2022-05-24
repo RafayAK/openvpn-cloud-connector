@@ -87,12 +87,19 @@ The OpenVPN Connector container also exposes metrics on port 9469 using
 allows us to expose metrics through running [a script](./prometheus/openvpn3.sh)
 to collect openvpn-connector metrics.
 
+When running the container, expose port 9469 (e.g. `docker run ... -p 9469:9469 ...`)
+and you can access the metrics at the following URL:
+
+```
+http://localhost:9469/probe?script=openvpn3&prefix=openvpn3
+```
+
 If using [Prometheus Operator](https://prometheus-operator.dev/) in Kubernetes,
 you can also apply the provided pod monitor to automatically collect metrics for
 openvpn-connector:
 
 ```bash
-kubectl apply -f ./manifests/podMonitor.yaml
+kubectl apply -f ./kubernetes/podMonitor.yaml
 ```
 
 # Why use containerized OpenVPN Cloud connector?
