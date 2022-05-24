@@ -1,0 +1,20 @@
+# If using Prometheus Operator, this manifest can be applied to automatically
+# monitor OpenVPN Connector metrics with Prometheus.
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: openvpn-connector
+  labels:
+    app: openvpn-connector
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: openvpn-connector
+  podMetricsEndpoints:
+  - port: prometheus
+    path: /probe
+    params:
+      script:
+        - openvpn3
+      prefix:
+        - openvpn3

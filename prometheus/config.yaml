@@ -1,0 +1,22 @@
+tls:
+  enabled: false
+  crt: server.crt
+  key: server.key
+
+basicAuth:
+  enabled: false
+  username: admin
+  password: admin
+
+bearerAuth:
+  enabled: false
+  signingKey: my_secret_key
+
+discovery:
+  # host: localhost
+  # port: 1231
+  # scheme: https
+
+scripts:
+  - name: openvpn3
+    script: /etc/script_exporter/openvpn3.sh
