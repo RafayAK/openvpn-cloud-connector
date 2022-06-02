@@ -1,0 +1,10 @@
+[Unit]
+Description=Prometheus exporter that exposes metrics through script execution
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/local/bin/script_exporter -config.file /etc/script_exporter/config.yaml
+
+[Install]
+WantedBy=multi-user.target

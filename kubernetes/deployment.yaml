@@ -1,0 +1,69 @@
+# OpenVPN Connector Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openvpn-connector
+  labels:
+    app.kubernetes.io/name: openvpn-connector
+    app.kubernetes.io/instance: openvpn-connector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: openvpn-connector
+      app.kubernetes.io/instance: openvpn-connector
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      name: openvpn-connector
+      labels:
+        app.kubernetes.io/name: openvpn-connector
+        app.kubernetes.io/instance: openvpn-connector
+    spec:
+      hostNetwork: true
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                - openvpn-connector
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: openvpn-connector
+          image: rafayak/ovpn-connector:latest
+          ports:
+            - containerPort: 443
+              name: https
+            - containerPort: 1194
+              name: openvpn
+            - containerPort: 9469
+              name: prometheus
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            capabilities:
+              add:
+                - SYS_NICE
+                - SYS_ADMIN
+                - NET_ADMIN
+            privileged: true
+          volumeMounts:
+            - name: cgroup
+              mountPath: /sys/fs/cgroup
+              readOnly: true
+            - name: connector-config
+              mountPath: /etc/openvpn3/autoload/connector.conf
+              subPath: connector.conf
+              readOnly: true
+      volumes:
+        - name: cgroup
+          hostPath:
+            path: /sys/fs/cgroup
+        - name: connector-config
+          secret:
+            secretName: openvpn-connector-config
